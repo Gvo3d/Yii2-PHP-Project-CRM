@@ -5,9 +5,12 @@ namespace app\controllers;
 use Yii;
 use app\models\Worker;
 use app\models\WorkerSearch;
+use app\models\IsWorking;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
+
 
 /**
  * WorkerController implements the CRUD actions for Worker model.
@@ -25,6 +28,13 @@ class WorkerController extends Controller
             ],
         ];
     }
+    
+    private function authoriseTest(){
+        if (Yii::$app->user->isGuest) 
+    {
+        $url = Url::home(true);
+        $this->redirect($url);
+    }}
 
     /**
      * Lists all Worker models.
@@ -32,6 +42,9 @@ class WorkerController extends Controller
      */
     public function actionIndex()
     {
+    
+    $this->authoriseTest();
+    
         $searchModel = new WorkerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -60,13 +73,21 @@ class WorkerController extends Controller
      */
     public function actionCreate()
     {
+        $adding = new IsWorking();
         $model = new Worker();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($adding->load(Yii::$app->request->post()) && $adding->validate()) {
+            $per = $adding->toAdd;
+            if ($per != '0'){
+                $url = Url::toRoute(['magazine/createw', 'worker_id' => $model->id]);
+                return $this->redirect($url);
+            }} 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'adding' => $adding,
             ]);
         }
     }
@@ -79,13 +100,22 @@ class WorkerController extends Controller
      */
     public function actionUpdate($id)
     {
+    
+        $adding = new IsWorking();
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($adding->load(Yii::$app->request->post()) && $adding->validate()) {
+            $per = $adding->toAdd;
+            if ($per != '0'){
+                $url = Url::toRoute(['magazine/createw', 'worker_id' => $id]);
+                return $this->redirect($url);
+            }} 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'adding' => $adding,
             ]);
         }
     }

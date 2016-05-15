@@ -8,6 +8,7 @@ use app\models\StatusSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * StatusController implements the CRUD actions for Status model.
@@ -25,6 +26,13 @@ class StatusController extends Controller
             ],
         ];
     }
+    
+    private function authoriseTest(){
+        if (Yii::$app->user->isGuest) 
+    {
+        $url = Url::home(true);
+        $this->redirect($url);
+    }}
 
     /**
      * Lists all Status models.
@@ -32,6 +40,7 @@ class StatusController extends Controller
      */
     public function actionIndex()
     {
+        $this->authoriseTest();
         $searchModel = new StatusSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

@@ -17,18 +17,18 @@ use app\models\StatusSearch;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'projectName')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'projectName')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 	
-	<?$items = ArrayHelper::map($query, 'id', 'statusName');
+	<?php $items = ArrayHelper::map($query, 'id', 'statusName');
     $params = [
         'prompt' => 'Выберите состояние проекта...'
     ];
     echo $form->field($model, 'status')->dropDownList($items,$params);?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

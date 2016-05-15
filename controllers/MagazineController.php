@@ -8,6 +8,7 @@ use app\models\MagazineSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * MagazineController implements the CRUD actions for Magazine model.
@@ -25,6 +26,13 @@ class MagazineController extends Controller
             ],
         ];
     }
+    
+    private function authoriseTest(){
+        if (Yii::$app->user->isGuest) 
+    {
+        $url = Url::home(true);
+        $this->redirect($url);
+    }}
 
     /**
      * Lists all Magazine models.
@@ -32,6 +40,7 @@ class MagazineController extends Controller
      */
     public function actionIndex()
     {
+        $this->authoriseTest();
         $searchModel = new MagazineSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -58,10 +67,24 @@ class MagazineController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+    public function actionCreatew($worker_id)
+    {
+        $model = new Magazine();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('createw', [
+                'model' => $model,
+                'worker_id' => $worker_id,
+            ]);
+        }
+    }
+    
     public function actionCreate()
     {
         $model = new Magazine();
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

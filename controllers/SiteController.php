@@ -9,7 +9,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\EntryForm;
-use app\models\Worker;
+use app\models\Recentupdates;
 
 class SiteController extends Controller
 {
@@ -18,12 +18,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['logout','create','createw','update'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['logout','create','createw','update'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -51,7 +56,10 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $rupdates = Recentupdates::find()->all();
+        return $this->render('index', [
+        'recentupdates' => $rupdates,
+        ]);
     }
 
     public function actionLogin()

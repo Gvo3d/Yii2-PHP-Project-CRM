@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\City;
 use app\models\CitySearch;
+use app\models\IsWorking;
 
         
 		
@@ -18,20 +19,21 @@ use app\models\CitySearch;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-<?
+    <?php
     $items = ArrayHelper::map($query, 'id', 'cityname');
     $params = [
         'prompt' => 'Выберите город...'
     ];
-    echo $form->field($model, 'city')->dropDownList($items,$params);
-?>
-
+    echo $form->field($model, 'city')->dropDownList($items,$params); ?>
+    
+    <?php echo $form->field($adding, 'toAdd')->checkbox(['value' => '$adding->toAdd', 'check' => '12312412', 'uncheck' => '0', 'label' => 'Add to existing project']) ?>
+    
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -24,26 +24,27 @@ use app\models\RoleSearch;
 
     <?php $form = ActiveForm::begin(); ?>
 
-	<? $itemsworker = ArrayHelper::map($workerquery, 'id', 'name');
+	<?php $itemsworker = ArrayHelper::map($workerquery, 'id', 'name');
     $paramsworker = [
         'prompt' => 'Выберите работника...'
     ];
-    echo $form->field($model, 'worker_id')->dropDownList($itemsworker,$paramsworker); ?>
+    $options = ['selected' => $model->worker_id = $worker_id];
+    echo $form->field($model, 'worker_id')->dropDownList($itemsworker,$paramsworker,$options); ?>
 
-	<? $itemsproject = ArrayHelper::map($projectquery, 'id', 'projectName');
+	<?php $itemsproject = ArrayHelper::map($projectquery, 'id', 'projectName');
     $paramsproject = [
         'prompt' => 'Выберите проект...'
     ];
     echo $form->field($model, 'project_id')->dropDownList($itemsproject,$paramsproject); ?>
 
-	<? $itemsrole = ArrayHelper::map($rolequery, 'id', 'roleName');
+	<?php $itemsrole = ArrayHelper::map($rolequery, 'id', 'roleName');
     $paramsrole = [
         'prompt' => 'Выберите роль...'
     ];
     echo $form->field($model, 'role_id')->dropDownList($itemsrole,$paramsrole); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

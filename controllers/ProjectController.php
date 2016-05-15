@@ -8,6 +8,10 @@ use app\models\ProjectSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Magazine;
+use app\models\MagazineSearch;
+use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 
 /**
  * ProjectController implements the CRUD actions for Project model.
@@ -25,6 +29,13 @@ class ProjectController extends Controller
             ],
         ];
     }
+    
+    private function authoriseTest(){
+        if (Yii::$app->user->isGuest) 
+    {
+        $url = Url::home(true);
+        $this->redirect($url);
+    }}
 
     /**
      * Lists all Project models.
@@ -32,6 +43,7 @@ class ProjectController extends Controller
      */
     public function actionIndex()
     {
+        $this->authoriseTest();
         $searchModel = new ProjectSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -47,9 +59,16 @@ class ProjectController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {
+    {           
+        $searchModel = new MagazineSearch(['project_id' => $id]);
+        $magazineProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'magazines' => $magazineProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 

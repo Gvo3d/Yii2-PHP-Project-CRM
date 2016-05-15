@@ -16,7 +16,7 @@ class WorkerSearch extends Worker
     {
         return [
             [['id', 'city'], 'integer'],
-            [['name', 'email'], 'safe'],
+            [['name', 'email', ], 'safe'],
         ];
     }
 
@@ -48,7 +48,7 @@ class WorkerSearch extends Worker
 
         $query->andFilterWhere([
             'id' => $this->id,
-			'cityname' => $cityname,
+			'city' => $this->city,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

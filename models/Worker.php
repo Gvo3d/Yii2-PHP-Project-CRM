@@ -39,6 +39,7 @@ class Worker extends \yii\db\ActiveRecord
             'name' => 'Worker',
             'email' => 'E-mail',
             'city' => 'City',
+            'cityname' => 'City Name',
         ];
     }
 

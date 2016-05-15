@@ -8,11 +8,10 @@ $this->title = 'About';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
     <p>
         Yakimove Denis <denis.yakimov89@gmail.com>
     </p>
 
-    <code><?= __FILE__ ?></code>
 </div>

@@ -8,6 +8,7 @@ use app\models\RoleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * RoleController implements the CRUD actions for Role model.
@@ -25,6 +26,13 @@ class RoleController extends Controller
             ],
         ];
     }
+    
+    private function authoriseTest(){
+        if (Yii::$app->user->isGuest) 
+    {
+        $url = Url::home(true);
+        $this->redirect($url);
+    }}
 
     /**
      * Lists all Role models.
@@ -32,6 +40,7 @@ class RoleController extends Controller
      */
     public function actionIndex()
     {
+        $this->authoriseTest();
         $searchModel = new RoleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
